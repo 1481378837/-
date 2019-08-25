@@ -33,23 +33,29 @@ def get_train(browser,n,x):
     '''编写标签列表'''
     label_crime = ['crime']
     #犯罪
-    label_CS = ['machine learning', 'deep learning', 'computer science', 'programm', 'programming', 'computers', 'image', 'image data', 'internet software', 'web sites', 'software', 'computing', 'internet']
+    label_CS = ['machine learning', 'deep learning', 'computer science', 'programm', 'programming', 'computers', 'image', 
+    'image data', 'internet software', 'web sites', 'software', 'computing', 'object detection', 'video games', 'image processing',
+    'preprocessing', 'image processing', 'programming languages']
     #计算机科学
-    label_transport = ['transport', 'travel', 'taxi', 'taxi services']
+    label_transport = ['transport', 'travel', 'taxi', 'taxi services', 'parking', 'air travel']
     #交通
     label_economic = ['economic', 'economics', 'finance', 'trade']
     #经济
-    label_healthcare = ['health', 'health care', 'biology','healthcare']
+    label_healthcare = ['health', 'health care', 'biology','healthcare', 'infectious diseases', 'medicine']
     #医疗
     lable_food_and_drink = ['food', 'drink', 'food and drink']
     #饮食
-    label_nature = ['energy', 'earth science']
+    label_nature = ['energy', 'earth science', 'ecology']
     #自然
     label_sports = ['golf', 'basketball', 'football', 'sports', 'olympic games']
     #运动
-    labels_culture = ['literature', 'linguistics', 'writing', 'culture', 'history', 'culture and humanities', 'education']
+    labels_culture = ['literature', 'linguistics', 'writing', 'culture', 'history', 'culture and humanities', 'education', 'language resources',
+    'comics']
     #人文
-    wait = WebDriverWait(browser,15)
+    labels_demographics = ['demographics', 'social sciences', 'social science']
+    #人口统计学
+
+    wait = WebDriverWait(browser,7)
     f = open('urls.txt','r')
     line = f.readline()
     line = line.rstrip('\n')
@@ -99,9 +105,16 @@ def get_train(browser,n,x):
             TITLE = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'.dataset-header-v2__title')))#数据集标题
             title = TITLE.text
             TAGS = browser.find_element_by_css_selector('body > main > div > div.site-layout__main-content > div > div > div > div > div.Home_Wrapper-sc-1lm6bf2.ePXBVM > div:nth-child(1) > div > div > div > div > div > div.QuickInfo_Tags-sc-b0c3af.bAArvc > div:nth-child(2)')
+            tags = TAGS.text
+            #获取zip文件名，作为数据集简介的标题
+            a = browser.find_element_by_css_selector('body > main > div > div.site-layout__main-content > div > div > div > div > div.dataset-header-v2__container > div > div > div:nth-child(2) > div > div.pageheader__bottom.pageheader__bottom > div.Header_CtaWrapper-sc-18vlhol.bPKnVy > a:nth-child(1)')
+            link1 = a.get_attribute('href')
+            n1 = link1.find('downloads')
+            link2 = link1[n1+len('downloads')+1:]
+            n2 = link2.find('.zip')
+            name = link2[:n2]
         except:
             continue
-        tags = TAGS.text
         splited_tags = tags.split('\n,\n')#将所有的tag转化成列表
         print(title)
         print(line_)
@@ -126,13 +139,14 @@ def get_train(browser,n,x):
                 paths.append('人文')
             if tag in lable_food_and_drink:
                 paths.append('饮食')
+            if tag in labels_demographics:
+                paths.append('人口统计学')
         print(paths)
-        print('--------------------')
         #将简介写入相应路径
         flag = 0 #标记是否有No discription yet
         for path in paths:
             try:
-                with open('E:/python/朴素贝叶斯文本分类/训练集/' + path + '/{}.txt'.format(title), 'w', errors='ignore', encoding='utf-8') as file:
+                with open('E:/python/朴素贝叶斯文本分类/训练集/' + path + '/{}.txt'.format(name), 'w', errors='ignore', encoding='utf-8') as file:
                     file.write(title+' :')#creat text
                     for Text in Texts:
                         file.write('\n\n'+Text.text)
@@ -140,14 +154,16 @@ def get_train(browser,n,x):
                             flag = 1
                             break
                 if flag == 1:
-                    os.remove('E:/python/朴素贝叶斯文本分类/训练集/' + path + '/{}.txt'.format(title))
-                    print('remove!')            
+                    os.remove('E:/python/朴素贝叶斯文本分类/训练集/' + path + '/{}.txt'.format(name))
+                    print('remove!') 
+                    break        
             except:
                 pass
+        print('--------------------')
 
 def main():
-    n = 138  #访问kaggle的起始页数
-    x = 50   #爬取的总页数
+    n = 122  #访问kaggle的起始页数
+    x = 28   #爬取的总页数
     '''browser = login_kaggle(url)'''
     browser = webdriver.Chrome()
     get_train(browser,n,x)
