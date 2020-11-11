@@ -1,0 +1,112 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{% block title %}首页{% endblock %} </title>
+	<meta name="viewpoint" content="width=device-width, initial-scale=1,shrink-to-fit=no">
+	<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.css">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static "polls/contact_form.css" %}"/>
+	<link rel='stylesheet' type='text/css' href="{% static 'css/custom-menu.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/icofont.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/materialize.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/owl.carousel.min.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/owl.theme.default.min.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/responsive.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/style.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/sprite.png'%}/">
+
+	<style >
+
+		.post {
+			margin-bottom: 50px;
+		}
+
+		}
+		.btn.btn-info{
+			position: relative;
+			margin-bottom: 40px;
+		}
+		p.card-text{
+			margin-bottom: 4px;
+		}
+		p.time{
+			font-size: 10px;
+			margin-bottom: 0px;
+		}
+		a.pos_left1{
+			position:relative;
+			left:173
+		}
+		.pos_top1{
+			position:relative;
+			top:10px;
+			left:-175px;
+		}
+		a{
+			color:black;
+		}
+
+		
+	</style>
+	{% block extra_head %}
+	{% endblock %}
+</head>
+
+
+		<!-- ==================== header-section Start ==================== -->
+<header id="header-section" class="header-section navbar-fixed">
+<nav class="nav-extended main-nav" >
+	<div class="container" style="max-width: 1500px;">
+		<div class="row"style="position: relative;">
+			<div class="nav-wrapper w100dt">	
+			<div style="width:100%;">
+			<a href="#" data-activates="mobile-demo" class="button-collapse">
+				<i class="icofont icofont-navigation-menu"></i>
+			</a>
+			<ul id="nav-mobile" class="main-menu center-align hide-on-med-and-down" style="width:100%;">
+			<li class="active" ><a href="/index/" style="font-size: 25px;padding: 25px 80px;">首页</a></li>
+			{% for cate in navs %}
+			<li role="presentation" style="position: relative;">
+				<a  href="{% url 'category-list' cate.id %}" style="font-size:20px; padding: 25px 20px;">{{cate.name}}</a>
+			</li>
+			{% endfor %}
+			<button class="btn btn-danger" style="position: absolute; right: 10px;top: 28px;"><a href ="/logout/"> 登出</a></button>
+			</ul>
+			
+			</div>
+		</div>
+	</div>
+</nav>
+	
+</header>
+
+
+
+<body style='background-color: rgb(240, 245, 250)'>
+
+
+		
+	
+	
+	<div class="container main">
+		<div class="row">
+			<div class="col-12 post-list">
+				{% block main %}
+				{% endblock %}
+			</div>
+		</div>
+	</div>
+	
+
+	<footer class="footer">
+		{% block footer %}
+		<hr>
+		<div class="container power">
+			<span class="text-muted">Power by ZTL</span>
+		</div>
+		{% endblock %}
+	</footer>
+</body>
+</html>

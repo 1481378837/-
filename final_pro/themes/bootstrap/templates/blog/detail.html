@@ -1,0 +1,60 @@
+{% extends "./base_for_detail.html" %}
+{% load comment_block %}
+{% block title %} 
+{{ post.title }} 
+{% endblock %}
+
+{% block extra_head %}
+<link  rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/googlemade.min.css">
+<meta name="viewpoint" content="width=device-width, initial-scale=1,shrink-to-fit=no">
+<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.css">
+
+
+<script  src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+{% endblock %}
+
+{% block main %}
+{% if post %}
+<!--<h1>{{ post.title }}</h1>
+<div>
+	<span>分类：{{ post.category.name}}</span>
+	<span>作者：{{ post.owner.username }}</span>
+
+</div>
+<hr>
+<p>
+	{{post.content}}
+</p>-->
+
+<div class='card' style='position:relative; top:30px;'>
+	<div class='card-body'>
+		<h5 class="card-title">{{ post.title  }}</h5>
+		<button class='' style='width:70px; float:right; background-color: #0070f8; border-color:#0070f8;'><a href="#" style='text-align:center; color:white;'>下载</a></button>
+		<span class="card-link" style='color:lightsteelblue;'>分类&emsp;<a class="badge badge-primary" href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a></span>
+		<br>
+		<span class="card-link" style='color:lightsteelblue;'>标签&ensp;&nbsp;
+			{% for tag in post.tag.all %}
+			<a class="badge badge-success" href="{% url 'tag-list' tag.id %}">  {{ tag.name }}</a>
+			{% endfor %}
+		</span>
+		<br>
+		<span class="time" style='color:lightsteelblue;'>发布时间&emsp;{{ post.created_time }}</p>
+		<span class="card-link"><a class="badge badge-info" href="{{ post.source }}">来源</a></span>
+	</div>
+</div>
+<hr>
+
+
+<div class='card'>
+	<div class='card-body'>
+		<p style='font-size:16px;'>
+			{% autoescape off %}
+			{{post.content_html}}
+			{% endautoescape %}
+		</p>
+		<!--{% endif %}
+		{% comment_block request.path %}
+		{% endblock %}-->
+	</div>
+</div>

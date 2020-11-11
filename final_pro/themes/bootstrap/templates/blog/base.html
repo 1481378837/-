@@ -1,0 +1,169 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{% block title %}首页{% endblock %} </title>
+	<meta name="viewpoint" content="width=device-width, initial-scale=1,shrink-to-fit=no">
+	<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.css">
+	{% load static %}
+	<link rel='stylesheet' type='text/css' href="{% static 'css/custom-menu.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/icofont.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/materialize.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/owl.carousel.min.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/owl.theme.default.min.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/responsive.css'%}/">
+	<link rel='stylesheet' type='text/css' href="{% static 'css/style.css'%}/">
+	<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.css">
+
+
+	<style >
+
+		.post {
+			margin-bottom: 50px;
+		}
+
+		.btn.btn-info{
+			position: relative;
+			margin-bottom: 40px;
+		}
+		p.card-text{
+			margin-bottom: 4px;
+		}
+		p.time{
+			font-size: 10px;
+			margin-bottom: 0px;
+		}
+		a.pos_left1{
+			position:relative;
+			left:173
+		}
+		.pos_top1{
+			position:relative;
+			top:10px;
+			left:-175px;
+		}
+		a{
+			color:black;
+		}
+
+		
+	</style>
+	{% block extra_head %}
+	{% endblock %}
+</head>
+
+
+		<!-- ==================== header-section Start ==================== -->
+{% if request.session.is_login %}
+<header id="header-section" class="header-section navbar-fixed">
+<nav class="nav-extended main-nav" >
+	<div class="container" style="max-width: 1500px;">
+		<div class="row"style="position: relative;">
+			<div class="nav-wrapper w100dt">	
+			<div style="width:100%;">
+			<a href="#" data-activates="mobile-demo" class="button-collapse">
+				<i class="icofont icofont-navigation-menu"></i>
+			</a>
+			<ul id="nav-mobile" class="main-menu center-align hide-on-med-and-down" style="width:100%;">
+			<li class="active" ><a href="/index/" style="font-size: 25px;padding: 25px 80px;">首页</a></li>
+			{% for cate in navs %}
+			<li role="presentation" style="position: relative;">
+				<a  href="{% url 'category-list' cate.id %}" style="font-size:20px; padding: 25px 20px;">{{cate.name}}</a>
+			</li>
+			{% endfor %}
+			<p style="position: absolute;right: 10px;top: 40px;">当前用户： {{request.session.user_name }}</p>
+			<button class="btn btn-danger" style="position: absolute; right: 10px;top: 68px;"><a href ="/logout/"> 登出</a></button>
+			</ul>
+			
+			</div>
+		</div>
+	</div>
+</nav>
+	
+</header>
+
+
+
+<body style='background-color: rgb(240, 245, 250)'>
+	
+	<!--<div class="container head">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="{% url 'index' %}">首页</a>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					{% for cate in navs %}
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'category-list' cate.id %}">{{cate.name}}</a>
+						</li>
+					{% endfor %}
+				</ul>
+				<form class="form-inline" method ='GET' action='/search/'>
+					<input class ="form-control" type="search" name = "keyword"placeholder="Search" aria-label="Search" value="{{ keyword }}">
+					<button class="btn btn-outline-success" type="submit">搜索</button>
+
+				</form>
+			</div>
+		</nav>
+		<div class="jumbotrom">
+			<h1 class="display-4">HITSZ数据开放平台</h1>-->
+
+		
+
+
+		<div class="jumbotrom">
+			<center class="display-4">HITSZ数据开放平台</center><br>
+			<nav class='navbar navbar-expand-sm bg-light' role='navigation' style='width: 70%; position:relative; margin: 0 auto;'>
+				<div class='container-fluid'>
+					<nav class="nav nav-pills flex-column flex-sm-row" style='position:relative; left:-205px;'>
+						<a class="nav-item nav-link pos_left1 active" href="/hottest/" id='hottest' style='text-align:center; width:100px;'>最热</a>
+						<a class="nav-item nav-link pos_left1" href="/latest/" id='latest' style='text-align:center; width:100px;'>最新</a>
+					</nav>
+					<form class="navbar-form form-inline navbar-right pos_top1" method ='GET' action='/search/' role='search' style='left:30px;'>
+						<div class='form-group'>
+							<input class ="form-control" type="search" name = "keyword" placeholder="Search" aria-label="Search" value="{{ keyword }}">
+						</div>
+						<button class="btn btn-default" type="submit">搜索</button>
+					</form>
+				</div>
+			</nav>
+			<br>
+		</div>
+	
+	
+	<div class="container main" style="">
+		<div class="row">
+			<div class="col-12 post-list">
+				{% block main %}
+				{% endblock %}
+			</div>
+		</div>
+	</div>
+	
+
+	<footer class="footer">
+		{% block footer %}
+		<hr>
+		<div class="container power">
+			<span class="text-muted">Power by ZTL</span>
+		</div>
+		{% endblock %}
+	</footer>
+
+
+	<!-- my custom js -->
+	<script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
+	
+
+	<script type="text/javascript">
+	
+	</script>
+{% else %}
+<h1 style="position: absolute;left: 700px;top: 50px;">请您登录后再访问 <a href="/login/""><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1569183752450&di=40f956759f5ed496a4b08c6402e895fc&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201508%2F22%2F20150822141911_MWarN.png" href = "/login/" style="position: absolute;left: 0px;top: 50px;"></a></h1>
+<h1 style="position: absolute;left: 750px;top: 300px;">点我一下吧</h1>
+
+{% endif %}
+</body>
+</html>

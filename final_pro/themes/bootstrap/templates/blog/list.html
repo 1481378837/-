@@ -1,0 +1,74 @@
+<head>
+	<meta charset="utf-8"> 
+	 <style>
+	 .card-body{
+		 position:relative;
+	 }
+	 .pagination{
+		 position:relative;
+		 left:225px;
+	 }
+	 
+	 </style>
+	<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.css">
+	<meta name="viewpoint" content="width=device-width, initial-scale=1,shrink-to-fit=no">
+
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</head>
+{% extends "./base.html" %}
+
+{% block title %}
+{% if tag %}
+标签页： {{ tag.name }}
+{% elif category %}
+分类页: {{ category.name }}
+{% else %}
+首页
+{% endif %}
+{% endblock %}
+
+{% block main %}
+
+{% for post in post_list %}
+<div class="card post">
+	<div class="card-body">
+		<h5 class="card-title"><a href="{% url 'post-detail' post.id %}">{{ post.title  }}</a></h5><p style="float:right;">浏览次数 {{ post.pv }}</p>
+		<span class="card-link"><a class="badge badge-info" href="{{ post.author }}">作者</a></span>
+		<span class="card-link">分类：<a class="badge badge-primary" href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a></span>
+		<span class="card-link">标签：
+			{% for tag in post.tag.all %}
+			<a class="badge badge-success" href="{% url 'tag-list' tag.id %}">  {{ tag.name }}</a>
+			{% endfor %}
+		</span>
+
+		<p class="card-text">{{ post.des }}  </p>
+
+		<p class="time" style="float: right;">发布时间 {{ post.created_time }}</p>
+
+	</div>
+</div>
+{% endfor %}
+
+
+
+
+<nav  class='pagination'; aria-label="Page navigation example" >
+	<ul class="pagination justifu-content-end">
+		{% if page_obj %}
+			{% if page_obj.has_previous %}
+			<li class='page-item'><a class='page-link' href="?page={{ page_obj.previous_page_number }}" tabindex="-1" style='font-size: 14px;'>上一页</a></li>
+			{% else %}
+			<li class='page-item disabled'><a class='page-link' href="#" tabindex="-1" style='font-size: 14px;'>上一页</a></li>
+			{% endif %}
+			<li class='page-item disabled'><a class='page-link' style='font-size: 14px;'>{{ page_obj.number}}/{{ paginator.num_pages}}</a>
+			{% if page_obj.has_next %}
+			<li class='page-item'><a class='page-link' href="?page={{ page_obj.next_page_number }}" style='font-size: 14px;'>下一页</a></li>
+			{% else %}
+			<li class='page-item disabled'><a class='page-link' href="#" style='font-size: 14px;'>下一页</a></li>
+			{% endif %}
+		{% endif %}
+	{% endblock %}
+	</ul>
+</nav>
+
